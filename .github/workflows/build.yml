@@ -27,7 +27,7 @@ jobs:
           D=$(dirname "$(find . -name gradlew -not -path '*/node_modules/*' | head -1)")
           cd "$D"
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --console=plain > "$GITHUB_WORKSPACE/build.log" 2>&1 || { echo "=== ERRORS ==="; grep -n -A2 "error" "$GITHUB_WORKSPACE/build.log" | head -50; echo "=== TAIL ==="; tail -25 "$GITHUB_WORKSPACE/build.log"; exit 1; }
       - uses: actions/upload-artifact@v4
         with:
           name: NetBoost-apk
